@@ -73,6 +73,14 @@ export const COMPONENT_REGISTRY: ComponentDefinition[] = [
 
   // Okta Components
   {
+    id: "mcp-bridge",
+    label: "MCP Bridge",
+    category: "okta-components",
+    fallbackMonogram: "MCPB",
+    color: "#007DC1",
+    nodeType: "okta-component",
+  },
+  {
     id: "sts",
     label: "STS (Brokered Consent)",
     category: "okta-components",

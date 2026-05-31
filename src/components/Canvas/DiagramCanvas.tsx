@@ -2,8 +2,7 @@
 
 import { useCallback, useMemo, useRef, useState } from "react";
 import {
-  Background,
-  BackgroundVariant,
+  ConnectionMode,
   Controls,
   type Connection,
   type Edge,
@@ -167,6 +166,7 @@ export function DiagramCanvas({
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
         defaultEdgeOptions={defaultEdgeOptions}
+        connectionMode={ConnectionMode.Loose}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
@@ -177,7 +177,6 @@ export function DiagramCanvas({
         fitViewOptions={{ padding: 0.25, maxZoom: 1.2 }}
         proOptions={{ hideAttribution: true }}
       >
-        <Background variant={BackgroundVariant.Dots} gap={20} size={1.5} />
         <Controls position="bottom-right" showInteractive={false} />
         <MiniMap
           pannable

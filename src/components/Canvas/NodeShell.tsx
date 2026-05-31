@@ -81,24 +81,15 @@ export function NodeShell({
         </button>
       )}
       {children}
-      {POSITIONS.flatMap((pos) => [
+      {POSITIONS.map((pos) => (
         <Handle
-          key={`s-${pos}`}
-          id={`s-${pos}`}
+          key={pos}
+          id={pos}
           type="source"
           position={pos}
           style={HANDLE_STYLE}
-          isConnectableStart
-        />,
-        <Handle
-          key={`t-${pos}`}
-          id={`t-${pos}`}
-          type="target"
-          position={pos}
-          style={HANDLE_STYLE}
-          isConnectableEnd
-        />,
-      ])}
+        />
+      ))}
     </div>
   );
 }
