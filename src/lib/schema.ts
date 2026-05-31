@@ -1,0 +1,60 @@
+import { z } from "zod";
+
+const categoryEnum = z.enum([
+  "ai-agents",
+  "resources",
+  "okta-components",
+  "okta-logo",
+]);
+
+const nodeDataSchema = z
+  .object({
+    componentId: z.string(),
+    category: categoryEnum,
+    label: z.string(),
+  })
+  .passthrough();
+
+const edgeDataSchema = z
+  .object({
+    label: z.string().optional(),
+  })
+  .passthrough();
+
+const positionSchema = z.object({
+  x: z.number(),
+  y: z.number(),
+});
+
+const nodeSchema = z.object({
+  id: z.string(),
+  type: z.string(),
+  position: positionSchema,
+  data: nodeDataSchema,
+});
+
+const edgeSchema = z.object({
+  id: z.string(),
+  source: z.string(),
+  target: z.string(),
+  sourceHandle: z.string().nullable().optional(),
+  targetHandle: z.string().nullable().optional(),
+  data: edgeDataSchema.optional(),
+  label: z.string().optional(),
+});
+
+const visibilitySchema = z.object({
+  "ai-agents": z.boolean(),
+  resources: z.boolean(),
+  "okta-components": z.boolean(),
+  "okta-logo": z.boolean(),
+});
+
+export const serializedDiagramSchema = z.object({
+  version: z.literal(1),
+  nodes: z.array(nodeSchema),
+  edges: z.array(edgeSchema),
+  visibility: visibilitySchema,
+});
+
+export type SerializedDiagramParsed = z.infer<typeof serializedDiagramSchema>;

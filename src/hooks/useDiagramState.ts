@@ -1,0 +1,163 @@
+"use client";
+
+import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  type Edge,
+  type Node,
+  type OnEdgesChange,
+  type OnNodesChange,
+  applyEdgeChanges,
+  applyNodeChanges,
+} from "@xyflow/react";
+import {
+  DEFAULT_VISIBILITY,
+  INITIAL_NODES,
+} from "@/lib/initialState";
+import {
+  loadFromLocalStorage,
+  saveToLocalStorage,
+} from "@/lib/persistence";
+import type {
+  DiagramEdgeData,
+  DiagramNodeData,
+  SerializedDiagram,
+  VisibilityMap,
+} from "@/lib/types";
+
+const SAVE_DEBOUNCE_MS = 250;
+
+type DiagramNode = Node<DiagramNodeData>;
+type DiagramEdge = Edge<DiagramEdgeData>;
+
+function toRuntimeNode(serialized: SerializedDiagram["nodes"][number]): DiagramNode {
+  return {
+    id: serialized.id,
+    type: serialized.type,
+    position: serialized.position,
+    data: serialized.data,
+  };
+}
+
+function toRuntimeEdge(serialized: SerializedDiagram["edges"][number]): DiagramEdge {
+  return {
+    id: serialized.id,
+    source: serialized.source,
+    target: serialized.target,
+    sourceHandle: serialized.sourceHandle ?? undefined,
+    targetHandle: serialized.targetHandle ?? undefined,
+    data: serialized.data,
+    label: serialized.label,
+    type: "labeled",
+  };
+}
+
+function toSerialized(
+  nodes: DiagramNode[],
+  edges: DiagramEdge[],
+  visibility: VisibilityMap,
+): SerializedDiagram {
+  return {
+    version: 1,
+    nodes: nodes.map((n) => ({
+      id: n.id,
+      type: n.type ?? "brand",
+      position: n.position,
+      data: n.data as DiagramNodeData,
+    })),
+    edges: edges.map((e) => ({
+      id: e.id,
+      source: e.source,
+      target: e.target,
+      sourceHandle: e.sourceHandle ?? undefined,
+      targetHandle: e.targetHandle ?? undefined,
+      data: e.data,
+      label: typeof e.label === "string" ? e.label : undefined,
+    })),
+    visibility,
+  };
+}
+
+export interface UseDiagramStateResult {
+  nodes: DiagramNode[];
+  edges: DiagramEdge[];
+  visibility: VisibilityMap;
+  hydrated: boolean;
+  setNodes: React.Dispatch<React.SetStateAction<DiagramNode[]>>;
+  setEdges: React.Dispatch<React.SetStateAction<DiagramEdge[]>>;
+  onNodesChange: OnNodesChange<DiagramNode>;
+  onEdgesChange: OnEdgesChange<DiagramEdge>;
+  setVisibility: React.Dispatch<React.SetStateAction<VisibilityMap>>;
+  loadDiagram: (diagram: SerializedDiagram) => void;
+  resetDiagram: () => void;
+}
+
+export function useDiagramState(): UseDiagramStateResult {
+  const [nodes, setNodes] = useState<DiagramNode[]>([]);
+  const [edges, setEdges] = useState<DiagramEdge[]>([]);
+  const [visibility, setVisibility] = useState<VisibilityMap>(DEFAULT_VISIBILITY);
+  const [hydrated, setHydrated] = useState(false);
+  const hydratedRef = useRef(false);
+
+  // Hydrate from localStorage exactly once after mount.
+  // localStorage is an external system; reading it in an effect and seeding
+  // React state is the documented pattern for SSR-safe persistence.
+  /* eslint-disable react-hooks/set-state-in-effect */
+  useEffect(() => {
+    if (hydratedRef.current) return;
+    hydratedRef.current = true;
+    const stored = loadFromLocalStorage();
+    if (stored) {
+      setNodes(stored.nodes.map(toRuntimeNode));
+      setEdges(stored.edges.map(toRuntimeEdge));
+      setVisibility(stored.visibility);
+    } else {
+      setNodes(INITIAL_NODES.map(toRuntimeNode));
+      setVisibility(DEFAULT_VISIBILITY);
+    }
+    setHydrated(true);
+  }, []);
+  /* eslint-enable react-hooks/set-state-in-effect */
+
+  // Debounced persistence
+  useEffect(() => {
+    if (!hydrated) return;
+    const id = window.setTimeout(() => {
+      saveToLocalStorage(toSerialized(nodes, edges, visibility));
+    }, SAVE_DEBOUNCE_MS);
+    return () => window.clearTimeout(id);
+  }, [nodes, edges, visibility, hydrated]);
+
+  const onNodesChange: OnNodesChange<DiagramNode> = useCallback((changes) => {
+    setNodes((current) => applyNodeChanges(changes, current));
+  }, []);
+
+  const onEdgesChange: OnEdgesChange<DiagramEdge> = useCallback((changes) => {
+    setEdges((current) => applyEdgeChanges(changes, current));
+  }, []);
+
+  const loadDiagram = useCallback((diagram: SerializedDiagram) => {
+    setNodes(diagram.nodes.map(toRuntimeNode));
+    setEdges(diagram.edges.map(toRuntimeEdge));
+    setVisibility(diagram.visibility);
+  }, []);
+
+  const resetDiagram = useCallback(() => {
+    setNodes(INITIAL_NODES.map(toRuntimeNode));
+    setEdges([]);
+    setVisibility(DEFAULT_VISIBILITY);
+  }, []);
+
+  return {
+    nodes,
+    edges,
+    visibility,
+    hydrated,
+    setNodes,
+    setEdges,
+    onNodesChange,
+    onEdgesChange,
+    setVisibility,
+    loadDiagram,
+    resetDiagram,
+  };
+}
