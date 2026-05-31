@@ -1,13 +1,14 @@
 "use client";
 
 import { Download, RotateCcw, Upload } from "lucide-react";
+import Image from "next/image";
 import { useRef } from "react";
 import type { Edge, Node } from "@xyflow/react";
 import { Button } from "../ui/Button";
-import { OktaIcon } from "../OktaIcon";
 import { ThemeToggle } from "./ThemeToggle";
 import { parseImportedDiagram } from "@/lib/persistence";
 import type {
+  CustomerConfig,
   DiagramEdgeData,
   DiagramNodeData,
   SerializedDiagram,
@@ -18,11 +19,19 @@ interface ToolbarProps {
   nodes: Node<DiagramNodeData>[];
   edges: Edge<DiagramEdgeData>[];
   visibility: VisibilityMap;
+  customer: CustomerConfig;
   onLoad: (diagram: SerializedDiagram) => void;
   onReset: () => void;
 }
 
-export function Toolbar({ nodes, edges, visibility, onLoad, onReset }: ToolbarProps) {
+export function Toolbar({
+  nodes,
+  edges,
+  visibility,
+  customer,
+  onLoad,
+  onReset,
+}: ToolbarProps) {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleExport = () => {
@@ -44,6 +53,7 @@ export function Toolbar({ nodes, edges, visibility, onLoad, onReset }: ToolbarPr
         label: typeof e.label === "string" ? e.label : undefined,
       })),
       visibility,
+      customer,
     };
     const blob = new Blob([JSON.stringify(payload, null, 2)], {
       type: "application/json",
@@ -87,16 +97,16 @@ export function Toolbar({ nodes, edges, visibility, onLoad, onReset }: ToolbarPr
 
   return (
     <header className="flex h-14 shrink-0 items-center justify-between gap-3 border-b border-slate-200 bg-white px-4 dark:border-slate-700 dark:bg-slate-900">
-      <div className="flex items-center gap-2.5">
-        <OktaIcon size={32} color="#007DC1" />
-        <div className="leading-tight">
-          <div className="text-base font-semibold tracking-tight text-slate-800 dark:text-slate-100">
-            Okta AI Architecture
-          </div>
-          <div className="text-[10px] text-slate-500 dark:text-slate-400">
-            Drag, connect, and label your story.
-          </div>
-        </div>
+      <div className="flex items-center">
+        <Image
+          src="/okta-logo.svg"
+          alt="Okta"
+          width={96}
+          height={51}
+          priority
+          draggable={false}
+          className="h-9 w-auto dark:invert"
+        />
       </div>
       <div className="flex items-center gap-2">
         <Button onClick={handleImportClick} variant="default">

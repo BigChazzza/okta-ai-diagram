@@ -3,10 +3,12 @@
 import { useMemo } from "react";
 import type { Node } from "@xyflow/react";
 import { CategorySection } from "./CategorySection";
+import { CustomerSection } from "./CustomerSection";
 import { getSidebarComponents } from "@/lib/brandRegistry";
 import { SIDEBAR_CATEGORIES } from "@/lib/componentCategories";
 import type {
   CategoryKey,
+  CustomerConfig,
   DiagramNodeData,
   VisibilityMap,
 } from "@/lib/types";
@@ -14,10 +16,18 @@ import type {
 interface SidebarProps {
   nodes: Node<DiagramNodeData>[];
   visibility: VisibilityMap;
+  customer: CustomerConfig;
   onSetVisibility: (next: VisibilityMap) => void;
+  onSetCustomer: (next: CustomerConfig) => void;
 }
 
-export function Sidebar({ nodes, visibility, onSetVisibility }: SidebarProps) {
+export function Sidebar({
+  nodes,
+  visibility,
+  customer,
+  onSetVisibility,
+  onSetCustomer,
+}: SidebarProps) {
   const components = getSidebarComponents();
 
   const placedCounts = useMemo(() => {
@@ -28,6 +38,8 @@ export function Sidebar({ nodes, visibility, onSetVisibility }: SidebarProps) {
     });
     return counts;
   }, [nodes]);
+
+  const customerPlaced = placedCounts["customer"] ?? 0;
 
   const toggleVisibility = (key: CategoryKey) => {
     onSetVisibility({ ...visibility, [key]: !visibility[key] });
@@ -47,6 +59,13 @@ export function Sidebar({ nodes, visibility, onSetVisibility }: SidebarProps) {
         </p>
       </div>
       <div className="flex-1 overflow-y-auto">
+        <CustomerSection
+          customer={customer}
+          onChange={onSetCustomer}
+          visible={visibility.customer}
+          onToggleVisible={() => toggleVisibility("customer")}
+          placedCount={customerPlaced}
+        />
         {SIDEBAR_CATEGORIES.map((meta) => (
           <CategorySection
             key={meta.key}

@@ -18,6 +18,7 @@ import {
   saveToLocalStorage,
 } from "@/lib/persistence";
 import type {
+  CustomerConfig,
   DiagramEdgeData,
   DiagramNodeData,
   SerializedDiagram,
@@ -55,6 +56,7 @@ function toSerialized(
   nodes: DiagramNode[],
   edges: DiagramEdge[],
   visibility: VisibilityMap,
+  customer: CustomerConfig,
 ): SerializedDiagram {
   return {
     version: 1,
@@ -74,6 +76,7 @@ function toSerialized(
       label: typeof e.label === "string" ? e.label : undefined,
     })),
     visibility,
+    customer,
   };
 }
 
@@ -81,12 +84,14 @@ export interface UseDiagramStateResult {
   nodes: DiagramNode[];
   edges: DiagramEdge[];
   visibility: VisibilityMap;
+  customer: CustomerConfig;
   hydrated: boolean;
   setNodes: React.Dispatch<React.SetStateAction<DiagramNode[]>>;
   setEdges: React.Dispatch<React.SetStateAction<DiagramEdge[]>>;
   onNodesChange: OnNodesChange<DiagramNode>;
   onEdgesChange: OnEdgesChange<DiagramEdge>;
   setVisibility: React.Dispatch<React.SetStateAction<VisibilityMap>>;
+  setCustomer: React.Dispatch<React.SetStateAction<CustomerConfig>>;
   loadDiagram: (diagram: SerializedDiagram) => void;
   resetDiagram: () => void;
 }
@@ -95,6 +100,7 @@ export function useDiagramState(): UseDiagramStateResult {
   const [nodes, setNodes] = useState<DiagramNode[]>([]);
   const [edges, setEdges] = useState<DiagramEdge[]>([]);
   const [visibility, setVisibility] = useState<VisibilityMap>(DEFAULT_VISIBILITY);
+  const [customer, setCustomer] = useState<CustomerConfig>({});
   const [hydrated, setHydrated] = useState(false);
   const hydratedRef = useRef(false);
 
@@ -110,6 +116,7 @@ export function useDiagramState(): UseDiagramStateResult {
       setNodes(stored.nodes.map(toRuntimeNode));
       setEdges(stored.edges.map(toRuntimeEdge));
       setVisibility(stored.visibility);
+      if (stored.customer) setCustomer(stored.customer);
     } else {
       setNodes(INITIAL_NODES.map(toRuntimeNode));
       setVisibility(DEFAULT_VISIBILITY);
@@ -122,10 +129,10 @@ export function useDiagramState(): UseDiagramStateResult {
   useEffect(() => {
     if (!hydrated) return;
     const id = window.setTimeout(() => {
-      saveToLocalStorage(toSerialized(nodes, edges, visibility));
+      saveToLocalStorage(toSerialized(nodes, edges, visibility, customer));
     }, SAVE_DEBOUNCE_MS);
     return () => window.clearTimeout(id);
-  }, [nodes, edges, visibility, hydrated]);
+  }, [nodes, edges, visibility, customer, hydrated]);
 
   const onNodesChange: OnNodesChange<DiagramNode> = useCallback((changes) => {
     setNodes((current) => applyNodeChanges(changes, current));
@@ -139,24 +146,28 @@ export function useDiagramState(): UseDiagramStateResult {
     setNodes(diagram.nodes.map(toRuntimeNode));
     setEdges(diagram.edges.map(toRuntimeEdge));
     setVisibility(diagram.visibility);
+    setCustomer(diagram.customer ?? {});
   }, []);
 
   const resetDiagram = useCallback(() => {
     setNodes(INITIAL_NODES.map(toRuntimeNode));
     setEdges([]);
     setVisibility(DEFAULT_VISIBILITY);
+    setCustomer({});
   }, []);
 
   return {
     nodes,
     edges,
     visibility,
+    customer,
     hydrated,
     setNodes,
     setEdges,
     onNodesChange,
     onEdgesChange,
     setVisibility,
+    setCustomer,
     loadDiagram,
     resetDiagram,
   };

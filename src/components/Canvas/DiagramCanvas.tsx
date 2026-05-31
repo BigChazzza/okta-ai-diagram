@@ -20,6 +20,7 @@ import {
 } from "@xyflow/react";
 import { nanoid } from "nanoid";
 import { BrandNode } from "./nodes/BrandNode";
+import { CustomerNode } from "./nodes/CustomerNode";
 import { OktaComponentNode } from "./nodes/OktaComponentNode";
 import { OktaLogoNode } from "./nodes/OktaLogoNode";
 import { LabeledEdge } from "./edges/LabeledEdge";
@@ -34,6 +35,7 @@ import type {
 
 const nodeTypes: NodeTypes = {
   brand: BrandNode,
+  customer: CustomerNode,
   "okta-component": OktaComponentNode,
   "okta-logo": OktaLogoNode,
 };

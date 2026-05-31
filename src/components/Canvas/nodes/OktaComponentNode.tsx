@@ -26,11 +26,8 @@ export function OktaComponentNode(props: NodeProps) {
       className="flex items-center gap-2 rounded-xl border-2 border-solid bg-sky-50 px-3 shadow-sm dark:bg-slate-900"
       style={{ borderColor: color }}
     >
-      <div
-        className="grid h-9 w-9 shrink-0 place-items-center rounded-lg"
-        style={{ background: color }}
-      >
-        <OktaIcon size={22} color="#FFFFFF" />
+      <div className="grid h-9 w-9 shrink-0 place-items-center text-slate-900 dark:text-slate-100">
+        <OktaIcon size={32} color="currentColor" />
       </div>
       <div className="min-w-0 flex-1">
         <div className="text-[9px] font-semibold uppercase tracking-wide text-[#007DC1]">

@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 const categoryEnum = z.enum([
+  "customer",
   "ai-agents",
   "resources",
   "okta-components",
@@ -44,17 +45,26 @@ const edgeSchema = z.object({
 });
 
 const visibilitySchema = z.object({
+  customer: z.boolean().default(true),
   "ai-agents": z.boolean(),
   resources: z.boolean(),
   "okta-components": z.boolean(),
   "okta-logo": z.boolean(),
 });
 
+const customerSchema = z
+  .object({
+    name: z.string().optional(),
+    logoDataUrl: z.string().optional(),
+  })
+  .optional();
+
 export const serializedDiagramSchema = z.object({
   version: z.literal(1),
   nodes: z.array(nodeSchema),
   edges: z.array(edgeSchema),
   visibility: visibilitySchema,
+  customer: customerSchema,
 });
 
 export type SerializedDiagramParsed = z.infer<typeof serializedDiagramSchema>;

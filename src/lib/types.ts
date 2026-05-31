@@ -1,10 +1,16 @@
 export type CategoryKey =
+  | "customer"
   | "ai-agents"
   | "resources"
   | "okta-components"
   | "okta-logo";
 
-export type NodeKind = "brand" | "okta-component" | "okta-logo";
+export type NodeKind = "brand" | "okta-component" | "okta-logo" | "customer";
+
+export interface CustomerConfig {
+  name?: string;
+  logoDataUrl?: string;
+}
 
 export interface ComponentDefinition {
   id: string;
@@ -53,4 +59,5 @@ export interface SerializedDiagram {
   nodes: SerializedNode[];
   edges: SerializedEdge[];
   visibility: VisibilityMap;
+  customer?: CustomerConfig;
 }

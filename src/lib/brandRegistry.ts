@@ -1,6 +1,16 @@
 import type { ComponentDefinition } from "./types";
 
 export const COMPONENT_REGISTRY: ComponentDefinition[] = [
+  // Customer (config-driven; not listed in regular sidebar categories)
+  {
+    id: "customer",
+    label: "Customer",
+    category: "customer",
+    fallbackMonogram: "C",
+    color: "#475569",
+    nodeType: "customer",
+  },
+
   // AI Agents
   {
     id: "custom-agent",
@@ -157,5 +167,7 @@ export function getComponentDefinition(
 }
 
 export function getSidebarComponents(): ComponentDefinition[] {
-  return COMPONENT_REGISTRY.filter((c) => c.category !== "okta-logo");
+  return COMPONENT_REGISTRY.filter(
+    (c) => c.category !== "okta-logo" && c.category !== "customer",
+  );
 }

@@ -4,6 +4,7 @@ import { ReactFlowProvider } from "@xyflow/react";
 import { DiagramCanvas } from "./Canvas/DiagramCanvas";
 import { Sidebar } from "./Sidebar/Sidebar";
 import { Toolbar } from "./Toolbar/Toolbar";
+import { CustomerProvider } from "@/contexts/CustomerContext";
 import { useDiagramState } from "@/hooks/useDiagramState";
 
 export default function DiagramApp() {
@@ -11,12 +12,14 @@ export default function DiagramApp() {
     nodes,
     edges,
     visibility,
+    customer,
     hydrated,
     onNodesChange,
     onEdgesChange,
     setNodes,
     setEdges,
     setVisibility,
+    setCustomer,
     loadDiagram,
     resetDiagram,
   } = useDiagramState();
@@ -31,33 +34,38 @@ export default function DiagramApp() {
 
   return (
     <ReactFlowProvider>
-      <div className="flex h-screen w-screen flex-col overflow-hidden bg-slate-100 dark:bg-slate-950">
-        <Toolbar
-          nodes={nodes}
-          edges={edges}
-          visibility={visibility}
-          onLoad={loadDiagram}
-          onReset={resetDiagram}
-        />
-        <div className="flex flex-1 overflow-hidden">
-          <Sidebar
+      <CustomerProvider value={customer}>
+        <div className="flex h-screen w-screen flex-col overflow-hidden bg-slate-100 dark:bg-slate-950">
+          <Toolbar
             nodes={nodes}
+            edges={edges}
             visibility={visibility}
-            onSetVisibility={setVisibility}
+            customer={customer}
+            onLoad={loadDiagram}
+            onReset={resetDiagram}
           />
-          <main className="relative flex-1 bg-slate-50 dark:bg-slate-900">
-            <DiagramCanvas
+          <div className="flex flex-1 overflow-hidden">
+            <Sidebar
               nodes={nodes}
-              edges={edges}
               visibility={visibility}
-              onNodesChange={onNodesChange}
-              onEdgesChange={onEdgesChange}
-              setNodes={setNodes}
-              setEdges={setEdges}
+              customer={customer}
+              onSetVisibility={setVisibility}
+              onSetCustomer={setCustomer}
             />
-          </main>
+            <main className="relative flex-1 bg-slate-50 dark:bg-slate-900">
+              <DiagramCanvas
+                nodes={nodes}
+                edges={edges}
+                visibility={visibility}
+                onNodesChange={onNodesChange}
+                onEdgesChange={onEdgesChange}
+                setNodes={setNodes}
+                setEdges={setEdges}
+              />
+            </main>
+          </div>
         </div>
-      </div>
+      </CustomerProvider>
     </ReactFlowProvider>
   );
 }
