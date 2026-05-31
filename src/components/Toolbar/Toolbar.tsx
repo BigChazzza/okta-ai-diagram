@@ -4,6 +4,7 @@ import { Download, RotateCcw, Upload } from "lucide-react";
 import { useRef } from "react";
 import type { Edge, Node } from "@xyflow/react";
 import { Button } from "../ui/Button";
+import { OktaIcon } from "../OktaIcon";
 import { ThemeToggle } from "./ThemeToggle";
 import { parseImportedDiagram } from "@/lib/persistence";
 import type {
@@ -86,13 +87,11 @@ export function Toolbar({ nodes, edges, visibility, onLoad, onReset }: ToolbarPr
 
   return (
     <header className="flex h-14 shrink-0 items-center justify-between gap-3 border-b border-slate-200 bg-white px-4 dark:border-slate-700 dark:bg-slate-900">
-      <div className="flex items-center gap-2">
-        <span className="grid h-7 w-7 place-items-center rounded-md bg-[#007DC1] text-[10px] font-bold text-white">
-          OKTA
-        </span>
+      <div className="flex items-center gap-2.5">
+        <OktaIcon size={32} color="#007DC1" />
         <div className="leading-tight">
-          <div className="text-sm font-semibold text-slate-800 dark:text-slate-100">
-            AI Architecture Diagram
+          <div className="text-base font-semibold tracking-tight text-slate-800 dark:text-slate-100">
+            Okta AI Architecture
           </div>
           <div className="text-[10px] text-slate-500 dark:text-slate-400">
             Drag, connect, and label your story.

@@ -2,11 +2,12 @@
 
 import { type NodeProps } from "@xyflow/react";
 import { NodeShell } from "../NodeShell";
+import { OktaIcon } from "@/components/OktaIcon";
 import { getComponentDefinition } from "@/lib/brandRegistry";
 import type { DiagramNodeData } from "@/lib/types";
 
-const NODE_WIDTH = 168;
-const NODE_HEIGHT = 78;
+const NODE_WIDTH = 196;
+const NODE_HEIGHT = 72;
 
 export function OktaComponentNode(props: NodeProps) {
   const { id, data, selected } = props as NodeProps & {
@@ -22,19 +23,22 @@ export function OktaComponentNode(props: NodeProps) {
       ariaLabel={data.label}
       width={NODE_WIDTH}
       height={NODE_HEIGHT}
-      className="flex items-center justify-center rounded-xl border-2 border-solid bg-sky-50 px-3 text-center shadow-sm dark:bg-slate-900"
+      className="flex items-center gap-2 rounded-xl border-2 border-solid bg-sky-50 px-3 shadow-sm dark:bg-slate-900"
       style={{ borderColor: color }}
     >
-      <div className="flex flex-col items-center gap-1">
-        <span
-          className="rounded-full px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-white"
-          style={{ background: color }}
-        >
+      <div
+        className="grid h-9 w-9 shrink-0 place-items-center rounded-lg"
+        style={{ background: color }}
+      >
+        <OktaIcon size={22} color="#FFFFFF" />
+      </div>
+      <div className="min-w-0 flex-1">
+        <div className="text-[9px] font-semibold uppercase tracking-wide text-[#007DC1]">
           Okta
-        </span>
-        <span className="text-xs font-semibold leading-tight text-slate-800 dark:text-slate-100">
+        </div>
+        <div className="truncate text-xs font-semibold leading-tight text-slate-800 dark:text-slate-100">
           {data.label}
-        </span>
+        </div>
       </div>
     </NodeShell>
   );

@@ -112,6 +112,30 @@ export const COMPONENT_REGISTRY: ComponentDefinition[] = [
     color: "#007DC1",
     nodeType: "okta-component",
   },
+  {
+    id: "api-access-management",
+    label: "API Access Management",
+    category: "okta-components",
+    fallbackMonogram: "AAM",
+    color: "#007DC1",
+    nodeType: "okta-component",
+  },
+  {
+    id: "opa",
+    label: "Okta Privileged Access",
+    category: "okta-components",
+    fallbackMonogram: "OPA",
+    color: "#007DC1",
+    nodeType: "okta-component",
+  },
+  {
+    id: "ispm",
+    label: "Identity Security Posture Mgmt",
+    category: "okta-components",
+    fallbackMonogram: "ISPM",
+    color: "#007DC1",
+    nodeType: "okta-component",
+  },
 
   // Singleton central node — filtered out of sidebar
   {

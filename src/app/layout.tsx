@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Okta AI Diagram",
+  title: "Okta AI Architecture",
   description:
     "Interactive diagram tool for explaining Okta's AI architecture — agents, resources, and Okta identity components.",
 };
