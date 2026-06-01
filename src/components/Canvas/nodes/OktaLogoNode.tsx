@@ -17,7 +17,7 @@ export function OktaLogoNode(props: NodeProps) {
       ariaLabel="Okta"
       width={NODE_WIDTH}
       height={NODE_HEIGHT}
-      className="grid place-items-center rounded-2xl border-2 bg-white px-6 shadow-md dark:bg-slate-50"
+      className="grid place-items-center rounded-2xl border-2 bg-transparent px-6"
       style={{ borderColor: "#007DC1" }}
     >
       <Image
@@ -27,7 +27,7 @@ export function OktaLogoNode(props: NodeProps) {
         height={90}
         priority
         draggable={false}
-        className="h-auto w-full"
+        className="h-auto w-full dark:invert"
       />
     </NodeShell>
   );
