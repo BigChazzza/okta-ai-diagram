@@ -17,6 +17,7 @@ import {
   loadFromLocalStorage,
   saveToLocalStorage,
 } from "@/lib/persistence";
+import { getComponentDefinition } from "@/lib/brandRegistry";
 import type {
   CustomerConfig,
   DiagramEdgeData,
@@ -31,11 +32,18 @@ type DiagramNode = Node<DiagramNodeData>;
 type DiagramEdge = Edge<DiagramEdgeData>;
 
 function toRuntimeNode(serialized: SerializedDiagram["nodes"][number]): DiagramNode {
+  // Re-sync category and label from the current registry so nodes saved
+  // before a registry change (e.g. moved categories, renamed labels) follow
+  // the latest layout instead of being orphaned under the old taxonomy.
+  const def = getComponentDefinition(serialized.data.componentId);
+  const data = def
+    ? { ...serialized.data, category: def.category, label: def.label }
+    : serialized.data;
   return {
     id: serialized.id,
     type: serialized.type,
     position: serialized.position,
-    data: serialized.data,
+    data,
   };
 }
 

@@ -1,5 +1,6 @@
 export type CategoryKey =
   | "customer"
+  | "strategy"
   | "ai-agents"
   | "resources"
   | "okta-components"

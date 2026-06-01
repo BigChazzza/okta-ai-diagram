@@ -8,6 +8,11 @@ export interface CategoryMeta {
 
 export const SIDEBAR_CATEGORIES: CategoryMeta[] = [
   {
+    key: "strategy",
+    label: "Strategy",
+    description: "Okta's identity strategy pillars",
+  },
+  {
     key: "ai-agents",
     label: "AI Agents",
     description: "Agents that act on behalf of a user",
@@ -25,6 +30,7 @@ export const SIDEBAR_CATEGORIES: CategoryMeta[] = [
 ];
 
 export const ALL_CATEGORIES: CategoryKey[] = [
+  "strategy",
   "ai-agents",
   "resources",
   "okta-components",
