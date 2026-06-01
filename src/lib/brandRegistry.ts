@@ -39,7 +39,7 @@ export const COMPONENT_REGISTRY: ComponentDefinition[] = [
   },
   {
     id: "copilot",
-    label: "GitHub Copilot",
+    label: "Copilot",
     category: "ai-agents",
     simpleIconsSlug: "githubcopilot",
     fallbackMonogram: "Co",
