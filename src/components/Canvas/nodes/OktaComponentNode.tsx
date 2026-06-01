@@ -23,7 +23,7 @@ export function OktaComponentNode(props: NodeProps) {
       ariaLabel={data.label}
       width={NODE_WIDTH}
       height={NODE_HEIGHT}
-      className="flex items-center gap-2 rounded-xl border-2 border-solid bg-sky-50 px-3 shadow-sm dark:bg-slate-900"
+      className="flex items-center gap-2 rounded-xl border-2 border-solid bg-transparent px-3 shadow-sm"
       style={{ borderColor: color }}
     >
       <div className="grid h-9 w-9 shrink-0 place-items-center text-slate-900 dark:text-slate-100">

@@ -146,6 +146,46 @@ export const COMPONENT_REGISTRY: ComponentDefinition[] = [
     color: "#007DC1",
     nodeType: "okta-component",
   },
+  {
+    id: "discover",
+    label: "Discover",
+    category: "okta-components",
+    fallbackMonogram: "D",
+    color: "#007DC1",
+    nodeType: "okta-component",
+  },
+  {
+    id: "onboard",
+    label: "Onboard",
+    category: "okta-components",
+    fallbackMonogram: "ON",
+    color: "#007DC1",
+    nodeType: "okta-component",
+  },
+  {
+    id: "agent-directory",
+    label: "Agent Directory",
+    category: "okta-components",
+    fallbackMonogram: "AD",
+    color: "#007DC1",
+    nodeType: "okta-component",
+  },
+  {
+    id: "protect",
+    label: "Protect",
+    category: "okta-components",
+    fallbackMonogram: "PR",
+    color: "#007DC1",
+    nodeType: "okta-component",
+  },
+  {
+    id: "governance",
+    label: "Governance",
+    category: "okta-components",
+    fallbackMonogram: "GOV",
+    color: "#007DC1",
+    nodeType: "okta-component",
+  },
 
   // Singleton central node — filtered out of sidebar
   {
