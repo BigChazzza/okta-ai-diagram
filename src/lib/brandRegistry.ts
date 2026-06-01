@@ -11,6 +11,26 @@ export const COMPONENT_REGISTRY: ComponentDefinition[] = [
     nodeType: "customer",
   },
 
+  // Users
+  {
+    id: "user",
+    label: "User",
+    category: "users",
+    lucideIcon: "user",
+    fallbackMonogram: "U",
+    color: "#0891B2",
+    nodeType: "brand",
+  },
+  {
+    id: "user-groups",
+    label: "User Groups",
+    category: "users",
+    lucideIcon: "users",
+    fallbackMonogram: "UG",
+    color: "#0891B2",
+    nodeType: "brand",
+  },
+
   // AI Agents
   {
     id: "custom-agent",
@@ -191,6 +211,14 @@ export const COMPONENT_REGISTRY: ComponentDefinition[] = [
     label: "Audit",
     category: "okta-components",
     fallbackMonogram: "AU",
+    color: "#007DC1",
+    nodeType: "okta-component",
+  },
+  {
+    id: "authentication",
+    label: "Authentication",
+    category: "okta-components",
+    fallbackMonogram: "AUTH",
     color: "#007DC1",
     nodeType: "okta-component",
   },

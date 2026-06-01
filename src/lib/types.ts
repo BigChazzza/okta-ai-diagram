@@ -1,10 +1,13 @@
 export type CategoryKey =
   | "customer"
   | "strategy"
+  | "users"
   | "ai-agents"
   | "resources"
   | "okta-components"
   | "okta-logo";
+
+export type LucideIconName = "user" | "users";
 
 export type NodeKind = "brand" | "okta-component" | "okta-logo" | "customer";
 
@@ -18,6 +21,7 @@ export interface ComponentDefinition {
   label: string;
   category: CategoryKey;
   simpleIconsSlug?: string;
+  lucideIcon?: LucideIconName;
   fallbackMonogram: string;
   color: string;
   accentColor?: string;

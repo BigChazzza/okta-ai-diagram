@@ -1,6 +1,8 @@
 "use client";
 
+import { User, Users, type LucideIcon } from "lucide-react";
 import * as simpleIcons from "simple-icons";
+import type { LucideIconName } from "@/lib/types";
 
 interface SimpleIcon {
   title: string;
@@ -11,11 +13,17 @@ interface SimpleIcon {
 
 interface BrandLogoProps {
   slug?: string;
+  lucideIcon?: LucideIconName;
   fallbackMonogram: string;
   size?: number;
   color?: string;
   monoColor?: string;
 }
+
+const LUCIDE_MAP: Record<LucideIconName, LucideIcon> = {
+  user: User,
+  users: Users,
+};
 
 function lookupIcon(slug?: string): SimpleIcon | null {
   if (!slug) return null;
@@ -26,6 +34,7 @@ function lookupIcon(slug?: string): SimpleIcon | null {
 
 export function BrandLogo({
   slug,
+  lucideIcon,
   fallbackMonogram,
   size = 28,
   color = "#FFFFFF",
@@ -46,6 +55,10 @@ export function BrandLogo({
         <path d={icon.path} fill={color} />
       </svg>
     );
+  }
+  if (lucideIcon) {
+    const LucideComp = LUCIDE_MAP[lucideIcon];
+    return <LucideComp size={size} color={color} strokeWidth={2} />;
   }
   return (
     <span

@@ -13,6 +13,11 @@ export const SIDEBAR_CATEGORIES: CategoryMeta[] = [
     description: "Okta's identity strategy pillars",
   },
   {
+    key: "users",
+    label: "Users",
+    description: "Human identities and groups",
+  },
+  {
     key: "ai-agents",
     label: "AI Agents",
     description: "Agents that act on behalf of a user",
@@ -31,6 +36,7 @@ export const SIDEBAR_CATEGORIES: CategoryMeta[] = [
 
 export const ALL_CATEGORIES: CategoryKey[] = [
   "strategy",
+  "users",
   "ai-agents",
   "resources",
   "okta-components",

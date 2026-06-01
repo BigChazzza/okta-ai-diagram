@@ -31,6 +31,7 @@ export function DraggableItem({ component, placedCount }: DraggableItemProps) {
       >
         <BrandLogo
           slug={component.simpleIconsSlug}
+          lucideIcon={component.lucideIcon}
           fallbackMonogram={component.fallbackMonogram}
           color="#FFFFFF"
           size={20}

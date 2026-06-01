@@ -22,6 +22,7 @@ export const INITIAL_NODES: SerializedNode[] = [
 export const DEFAULT_VISIBILITY: VisibilityMap = {
   customer: true,
   strategy: true,
+  users: true,
   "ai-agents": true,
   resources: true,
   "okta-components": true,

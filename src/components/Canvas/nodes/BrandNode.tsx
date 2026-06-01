@@ -16,6 +16,7 @@ export function BrandNode(props: NodeProps) {
   const def = getComponentDefinition(data.componentId);
   const color = def?.color ?? "#475569";
   const slug = def?.simpleIconsSlug;
+  const lucideIcon = def?.lucideIcon;
   const monogram = def?.fallbackMonogram ?? data.label.slice(0, 2).toUpperCase();
 
   return (
@@ -32,7 +33,12 @@ export function BrandNode(props: NodeProps) {
         className="grid h-12 w-12 place-items-center rounded-xl"
         style={{ background: color }}
       >
-        <BrandLogo slug={slug} fallbackMonogram={monogram} color="#FFFFFF" />
+        <BrandLogo
+          slug={slug}
+          lucideIcon={lucideIcon}
+          fallbackMonogram={monogram}
+          color="#FFFFFF"
+        />
       </div>
       <div className="px-2 text-center text-[11px] font-semibold leading-tight text-slate-700 dark:text-slate-100">
         {data.label}

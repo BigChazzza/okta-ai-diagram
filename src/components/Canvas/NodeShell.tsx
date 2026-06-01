@@ -4,11 +4,12 @@ import { Handle, Position, useReactFlow } from "@xyflow/react";
 import { X } from "lucide-react";
 import { useState, type CSSProperties, type ReactNode } from "react";
 
-const HANDLE_STYLE: CSSProperties = {
+const HANDLE_BASE_STYLE: CSSProperties = {
   width: 10,
   height: 10,
   background: "#94a3b8",
   border: "2px solid #f8fafc",
+  transition: "opacity 120ms ease",
 };
 
 const POSITIONS: Position[] = [
@@ -87,7 +88,11 @@ export function NodeShell({
           id={pos}
           type="source"
           position={pos}
-          style={HANDLE_STYLE}
+          style={{
+            ...HANDLE_BASE_STYLE,
+            opacity: hover || selected ? 1 : 0,
+            pointerEvents: hover || selected ? "auto" : "none",
+          }}
         />
       ))}
     </div>
