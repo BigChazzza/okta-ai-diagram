@@ -186,6 +186,14 @@ export const COMPONENT_REGISTRY: ComponentDefinition[] = [
     color: "#007DC1",
     nodeType: "okta-component",
   },
+  {
+    id: "audit",
+    label: "Audit",
+    category: "okta-components",
+    fallbackMonogram: "AU",
+    color: "#007DC1",
+    nodeType: "okta-component",
+  },
 
   // Singleton central node — filtered out of sidebar
   {

@@ -66,16 +66,24 @@ export function Sidebar({
           onToggleVisible={() => toggleVisibility("customer")}
           placedCount={customerPlaced}
         />
-        {SIDEBAR_CATEGORIES.map((meta) => (
-          <CategorySection
-            key={meta.key}
-            meta={meta}
-            components={components.filter((c) => c.category === meta.key)}
-            visible={visibility[meta.key]}
-            onToggleVisible={() => toggleVisibility(meta.key)}
-            placedCounts={placedCounts}
-          />
-        ))}
+        {SIDEBAR_CATEGORIES.map((meta) => {
+          let entries = components.filter((c) => c.category === meta.key);
+          if (meta.key === "okta-components") {
+            entries = [...entries].sort((a, b) =>
+              a.label.localeCompare(b.label, undefined, { sensitivity: "base" }),
+            );
+          }
+          return (
+            <CategorySection
+              key={meta.key}
+              meta={meta}
+              components={entries}
+              visible={visibility[meta.key]}
+              onToggleVisible={() => toggleVisibility(meta.key)}
+              placedCounts={placedCounts}
+            />
+          );
+        })}
       </div>
       <footer className="border-t border-slate-200 px-4 py-3 text-[10px] text-slate-400 dark:border-slate-700 dark:text-slate-500">
         Tip: double-click an arrow to label it.
