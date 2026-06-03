@@ -60,6 +60,7 @@ const customerSchema = z
   .object({
     name: z.string().optional(),
     logoDataUrl: z.string().optional(),
+    logoUrl: z.string().url().optional(),
   })
   .optional();
 

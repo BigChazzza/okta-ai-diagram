@@ -1,6 +1,7 @@
 "use client";
 
 import { type NodeProps } from "@xyflow/react";
+import { EditableLabel } from "../EditableLabel";
 import { NodeShell } from "../NodeShell";
 import { OktaIcon } from "@/components/OktaIcon";
 import { getComponentDefinition } from "@/lib/brandRegistry";
@@ -33,9 +34,11 @@ export function OktaComponentNode(props: NodeProps) {
         <div className="text-[9px] font-semibold uppercase tracking-wide text-[#007DC1]">
           Okta
         </div>
-        <div className="truncate text-xs font-semibold leading-tight text-slate-800 dark:text-slate-100">
-          {data.label}
-        </div>
+        <EditableLabel
+          nodeId={id}
+          label={data.label}
+          className="text-xs font-semibold leading-tight text-slate-800 dark:text-slate-100"
+        />
       </div>
     </NodeShell>
   );

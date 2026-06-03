@@ -49,13 +49,19 @@ export function clearStoredDiagram(): void {
 }
 
 export function parseImportedDiagram(text: string): SerializedDiagram {
-  const parsed = JSON.parse(text);
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(text);
+  } catch {
+    throw new Error("Not valid JSON — could not parse the file.");
+  }
   const result = serializedDiagramSchema.safeParse(parsed);
   if (!result.success) {
-    throw new Error(
-      "Invalid diagram file: " +
-        JSON.stringify(result.error.flatten().fieldErrors),
-    );
+    const issues = result.error.issues
+      .slice(0, 3)
+      .map((i) => `${i.path.join(".") || "root"}: ${i.message}`)
+      .join(" | ");
+    throw new Error(`Invalid diagram format — ${issues}`);
   }
   return result.data as SerializedDiagram;
 }

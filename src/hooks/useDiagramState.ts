@@ -32,12 +32,13 @@ type DiagramNode = Node<DiagramNodeData>;
 type DiagramEdge = Edge<DiagramEdgeData>;
 
 function toRuntimeNode(serialized: SerializedDiagram["nodes"][number]): DiagramNode {
-  // Re-sync category and label from the current registry so nodes saved
-  // before a registry change (e.g. moved categories, renamed labels) follow
-  // the latest layout instead of being orphaned under the old taxonomy.
+  // Re-sync category from the current registry so nodes saved before a
+  // category restructure land under the correct visibility toggle.
+  // Label is intentionally NOT overwritten — JSON-supplied labels (1.1) and
+  // user renames (2.3) must survive round-trips through localStorage.
   const def = getComponentDefinition(serialized.data.componentId);
   const data = def
-    ? { ...serialized.data, category: def.category, label: def.label }
+    ? { ...serialized.data, category: def.category }
     : serialized.data;
   return {
     id: serialized.id,

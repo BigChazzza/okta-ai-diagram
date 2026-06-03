@@ -14,6 +14,7 @@ export type NodeKind = "brand" | "okta-component" | "okta-logo" | "customer";
 export interface CustomerConfig {
   name?: string;
   logoDataUrl?: string;
+  logoUrl?: string;
 }
 
 export interface ComponentDefinition {

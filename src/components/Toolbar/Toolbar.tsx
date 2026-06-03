@@ -1,6 +1,6 @@
 "use client";
 
-import { Download, RotateCcw, Upload } from "lucide-react";
+import { Download, Image as ImageIcon, LayoutDashboard, RotateCcw, Upload } from "lucide-react";
 import Image from "next/image";
 import { useRef } from "react";
 import type { Edge, Node } from "@xyflow/react";
@@ -22,6 +22,9 @@ interface ToolbarProps {
   customer: CustomerConfig;
   onLoad: (diagram: SerializedDiagram) => void;
   onReset: () => void;
+  onAutoLayout: () => void;
+  onExportImage: (format: "png" | "svg") => void;
+  onError: (msg: string) => void;
 }
 
 export function Toolbar({
@@ -31,6 +34,9 @@ export function Toolbar({
   customer,
   onLoad,
   onReset,
+  onAutoLayout,
+  onExportImage,
+  onError,
 }: ToolbarProps) {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -78,10 +84,7 @@ export function Toolbar({
       const diagram = parseImportedDiagram(text);
       onLoad(diagram);
     } catch (err) {
-      window.alert(
-        "Could not import this file:\n\n" +
-          (err instanceof Error ? err.message : String(err)),
-      );
+      onError(err instanceof Error ? err.message : "Could not parse the diagram file.");
     }
   };
 
@@ -109,15 +112,35 @@ export function Toolbar({
         />
       </div>
       <div className="flex items-center gap-2">
-        <Button onClick={handleImportClick} variant="default">
+        <Button onClick={onAutoLayout} variant="default" title="Auto-arrange nodes">
+          <LayoutDashboard size={14} />
+          <span className="hidden sm:inline">Auto Layout</span>
+        </Button>
+        <Button
+          onClick={() => onExportImage("png")}
+          variant="default"
+          title="Export as PNG image"
+        >
+          <ImageIcon size={14} />
+          <span className="hidden sm:inline">PNG</span>
+        </Button>
+        <Button
+          onClick={() => onExportImage("svg")}
+          variant="default"
+          title="Export as SVG image"
+        >
+          <ImageIcon size={14} />
+          <span className="hidden sm:inline">SVG</span>
+        </Button>
+        <Button onClick={handleImportClick} variant="default" title="Import JSON diagram">
           <Upload size={14} />
           <span className="hidden sm:inline">Import</span>
         </Button>
-        <Button onClick={handleExport} variant="default">
+        <Button onClick={handleExport} variant="default" title="Export JSON diagram">
           <Download size={14} />
           <span className="hidden sm:inline">Export</span>
         </Button>
-        <Button onClick={handleReset} variant="ghost">
+        <Button onClick={handleReset} variant="ghost" title="Reset diagram to defaults">
           <RotateCcw size={14} />
           <span className="hidden sm:inline">Reset</span>
         </Button>

@@ -2,6 +2,7 @@
 
 import { type NodeProps } from "@xyflow/react";
 import { Building2 } from "lucide-react";
+import { EditableLabel } from "../EditableLabel";
 import { NodeShell } from "../NodeShell";
 import { useCustomer } from "@/contexts/CustomerContext";
 
@@ -18,6 +19,7 @@ export function CustomerNode(props: NodeProps) {
   const { id, selected } = props;
   const customer = useCustomer();
   const displayName = customer.name?.trim() || "Customer";
+  const logoSrc = customer.logoDataUrl ?? customer.logoUrl;
 
   return (
     <NodeShell
@@ -29,11 +31,10 @@ export function CustomerNode(props: NodeProps) {
       className="flex flex-col items-center justify-center gap-2 rounded-2xl border border-slate-300 bg-white shadow-sm dark:border-slate-600 dark:bg-slate-800"
     >
       <div className="grid h-12 w-12 place-items-center overflow-hidden rounded-xl bg-slate-100 text-slate-500 dark:bg-slate-700 dark:text-slate-300">
-        {customer.logoDataUrl ? (
-          // Data URLs from user uploads — Next/Image would require remotePatterns config
+        {logoSrc ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            src={customer.logoDataUrl}
+            src={logoSrc}
             alt={`${displayName} logo`}
             className="h-full w-full object-contain"
             draggable={false}
@@ -46,9 +47,11 @@ export function CustomerNode(props: NodeProps) {
           <Building2 size={22} />
         )}
       </div>
-      <div className="max-w-[140px] truncate px-2 text-center text-[11px] font-semibold leading-tight text-slate-700 dark:text-slate-100">
-        {displayName}
-      </div>
+      <EditableLabel
+        nodeId={id}
+        label={displayName}
+        className="max-w-[140px] px-2 text-[11px] font-semibold leading-tight text-slate-700 dark:text-slate-100"
+      />
     </NodeShell>
   );
 }

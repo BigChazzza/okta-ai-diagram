@@ -2,6 +2,7 @@
 
 import { type NodeProps } from "@xyflow/react";
 import { BrandLogo } from "../BrandLogo";
+import { EditableLabel } from "../EditableLabel";
 import { NodeShell } from "../NodeShell";
 import { getComponentDefinition } from "@/lib/brandRegistry";
 import type { DiagramNodeData } from "@/lib/types";
@@ -40,9 +41,11 @@ export function BrandNode(props: NodeProps) {
           color="#FFFFFF"
         />
       </div>
-      <div className="px-2 text-center text-[11px] font-semibold leading-tight text-slate-700 dark:text-slate-100">
-        {data.label}
-      </div>
+      <EditableLabel
+        nodeId={id}
+        label={data.label}
+        className="px-2 text-[11px] font-semibold leading-tight text-slate-700 dark:text-slate-100"
+      />
     </NodeShell>
   );
 }
