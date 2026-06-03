@@ -77,16 +77,20 @@ function DiagramInner({ configUrl }: DiagramAppProps) {
     async (format: "png" | "svg") => {
       const el = document.querySelector<HTMLElement>(".react-flow");
       if (!el) return;
+      // Exclude UI chrome that shouldn't appear in diagram exports
+      const filter = (node: Element) =>
+        !node.classList?.contains("react-flow__minimap") &&
+        !node.classList?.contains("react-flow__controls");
       try {
         const stamp = new Date().toISOString().slice(0, 10);
         if (format === "png") {
-          const url = await toPng(el, { pixelRatio: 2 });
+          const url = await toPng(el, { pixelRatio: 2, filter });
           const a = document.createElement("a");
           a.href = url;
           a.download = `okta-ai-diagram-${stamp}.png`;
           a.click();
         } else {
-          const url = await toSvg(el);
+          const url = await toSvg(el, { filter });
           const a = document.createElement("a");
           a.href = url;
           a.download = `okta-ai-diagram-${stamp}.svg`;
